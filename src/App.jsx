@@ -1029,7 +1029,7 @@ const ROLE_PERMISSIONS = {
     actions: ['add_device', 'add_vendor', 'create_request', 'allocate', 'warranty_claim', 'maintenance', 'sla', 'reports', 'users', 'delete_user']
   },
   procurement: {
-    pages: ['dashboard', 'vendors', 'requests', 'allocations', 'sla', 'reports', 'employee_reports', 'procurement_issues'],
+    pages: ['dashboard', 'devices', 'vendors', 'requests', 'allocations', 'sla', 'reports', 'employee_reports', 'procurement_issues'],
     actions: ['add_vendor', 'create_request', 'allocate', 'sla', 'reports']
   },
   vendor: {
