@@ -3400,7 +3400,7 @@ function SLAPage() {
     setVendors(data)
   }
 
-  const handleIT ManagerSignatureUpload = (e) => {
+  const handleITManagerSignatureUpload = (e) => {
     const file = e.target.files[0]
     if (file) {
       const reader = new FileReader()
@@ -3553,7 +3553,7 @@ function SLAPage() {
                   </div>
                   <div className="form-group">
                     <label className="form-label">IT Manager Signature</label>
-                    <input type="file" accept="image/*" className="form-input" onChange={handleIT ManagerSignatureUpload} style={{ padding: 8 }} />
+                    <input type="file" accept="image/*" className="form-input" onChange={handleITManagerSignatureUpload} style={{ padding: 8 }} />
                     {formData.ceo_signature && (
                       <img src={formData.ceo_signature} alt="IT Manager Signature" style={{ maxWidth: 150, maxHeight: 60, marginTop: 8, border: '1px solid #ccc', padding: 5 }} />
                     )}
