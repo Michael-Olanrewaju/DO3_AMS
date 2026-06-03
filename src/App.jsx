@@ -1673,6 +1673,20 @@ function RequestsPage({ globalModal, setGlobalModal }) {
   const isAdmin = normalizeRole(user.role) === 'it_admin'
   const currentVendorId = user.vendor_id || null
 
+  // If vendor_id is not in user data, try to get it from vendors table
+  useEffect(() => {
+    if (isVendor && !currentVendorId) {
+      loadVendors().then(() => {
+        // Find vendor by matching email
+        const matchedVendor = vendors.find(v => v.email === user.email)
+        if (matchedVendor) {
+          const updatedUser = { ...user, vendor_id: matchedVendor.id }
+          localStorage.setItem('user', JSON.stringify(updatedUser))
+        }
+      })
+    }
+  }, [isVendor, currentVendorId])
+
   useEffect(() => {
     loadRequests()
     loadVendors()

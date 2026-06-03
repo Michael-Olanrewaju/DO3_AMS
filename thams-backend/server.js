@@ -707,7 +707,7 @@ app.post('/api/auth/login', (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
     const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: '24h' });
-    res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
+    res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role, vendor_id: user.vendor_id } });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -2120,11 +2120,19 @@ app.post('/api/procurement/requests', authMiddleware, (req, res) => {
     // Notify vendor
     const vendor = runQuery('SELECT email, name FROM vendors WHERE id = ?', [vendor_id]);
     if (vendor.length > 0) {
+      // Create notification with vendor_id
       runInsert(
-        'INSERT INTO notifications (id, title, message, type) VALUES (?, ?, ?, ?)',
-        [uuidv4(), 'New Purchase Request', `You have a new purchase request for ${product_name || 'equipment'}. Please log in to respond.`, 'request']
+        'INSERT INTO notifications (id, vendor_id, title, message, type) VALUES (?, ?, ?, ?, ?)',
+        [uuidv4(), vendor_id, 'New Purchase Request', `You have a new purchase request for ${product_name || 'equipment'}. Please log in to respond.`, 'request']
       );
-      // In production, send email to vendor here
+      // Also try to find vendor user account and notify them
+      const vendorUsers = runQuery('SELECT id FROM users WHERE email = ?', [vendor[0].email]);
+      if (vendorUsers.length > 0) {
+        runInsert(
+          'INSERT INTO notifications (id, user_id, title, message, type) VALUES (?, ?, ?, ?, ?)',
+          [uuidv4(), vendorUsers[0].id, 'New Purchase Request', `You have a new purchase request for ${product_name || 'equipment'}. Please log in to respond.`, 'request']
+        );
+      }
     }
 
     res.status(201).json({ message: 'Request created successfully', request_number });
