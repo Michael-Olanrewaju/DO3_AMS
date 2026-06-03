@@ -649,14 +649,14 @@ function VendorSLAPage() {
           <div style={{ marginTop: 24, paddingTop: 16, borderTop: '1px solid #ddd', textAlign: 'center' }}>
             {sla?.ceo_signature && (
               <div style={{ marginBottom: 12 }}>
-                <img src={sla.ceo_signature} alt="CEO Signature" style={{ maxWidth: 200, maxHeight: 80, border: '1px solid #ccc', padding: 5 }} />
+                <img src={sla.ceo_signature} alt="IT Manager Signature" style={{ maxWidth: 200, maxHeight: 80, border: '1px solid #ccc', padding: 5 }} />
               </div>
             )}
             <div style={{ color: 'var(--primary)', fontSize: 16 }}>
               {sla?.ceo_name || 'DR Orlando Olumide Odejide'}
             </div>
             <div style={{ fontSize: 12, color: 'var(--text-secondary)', marginTop: 4 }}>
-              CEO
+              IT Manager
             </div>
           </div>
         </div>
@@ -1368,6 +1368,7 @@ function DevicesPage({ globalModal, setGlobalModal }) {
           <table>
             <thead>
               <tr>
+                <th>Image</th>
                 <th>Asset Tag</th>
                 <th>Serial Number</th>
                 <th>Model</th>
@@ -1381,9 +1382,21 @@ function DevicesPage({ globalModal, setGlobalModal }) {
             </thead>
             <tbody>
               {devices.length === 0 ? (
-                <tr><td colSpan={normalizeRole(user.role) !== 'vendor' ? 9 : 8} className="empty-state">No devices found</td></tr>
+                <tr><td colSpan={normalizeRole(user.role) !== 'vendor' ? 10 : 9} className="empty-state">No devices found</td></tr>
               ) : devices.map(device => (
                 <tr key={device.id}>
+                  <td>
+                    {device.device_images ? (
+                      <img
+                        src={device.device_images}
+                        alt={device.asset_tag}
+                        style={{ width: 50, height: 50, objectFit: 'cover', borderRadius: 4, border: '1px solid #ccc' }}
+                        onClick={() => window.open(device.device_images, '_blank')}
+                      />
+                    ) : (
+                      <span style={{ color: '#999', fontSize: 12 }}>No Image</span>
+                    )}
+                  </td>
                   <td><strong>{device.asset_tag}</strong></td>
                   <td>{device.serial_number}</td>
                   <td>{device.model}</td>
@@ -3387,7 +3400,7 @@ function SLAPage() {
     setVendors(data)
   }
 
-  const handleCEOSignatureUpload = (e) => {
+  const handleIT ManagerSignatureUpload = (e) => {
     const file = e.target.files[0]
     if (file) {
       const reader = new FileReader()
@@ -3535,14 +3548,14 @@ function SLAPage() {
                 </div>
                 <div className="grid-2">
                   <div className="form-group">
-                    <label className="form-label">CEO Name</label>
+                    <label className="form-label">IT Manager Name</label>
                     <input className="form-input" value={formData.ceo_name} onChange={e => setFormData({...formData, ceo_name: e.target.value})} placeholder="Dr Orlando Olumide Odejide" required />
                   </div>
                   <div className="form-group">
-                    <label className="form-label">CEO Signature</label>
-                    <input type="file" accept="image/*" className="form-input" onChange={handleCEOSignatureUpload} style={{ padding: 8 }} />
+                    <label className="form-label">IT Manager Signature</label>
+                    <input type="file" accept="image/*" className="form-input" onChange={handleIT ManagerSignatureUpload} style={{ padding: 8 }} />
                     {formData.ceo_signature && (
-                      <img src={formData.ceo_signature} alt="CEO Signature" style={{ maxWidth: 150, maxHeight: 60, marginTop: 8, border: '1px solid #ccc', padding: 5 }} />
+                      <img src={formData.ceo_signature} alt="IT Manager Signature" style={{ maxWidth: 150, maxHeight: 60, marginTop: 8, border: '1px solid #ccc', padding: 5 }} />
                     )}
                   </div>
                 </div>

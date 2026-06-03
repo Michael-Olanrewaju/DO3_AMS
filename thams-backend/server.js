@@ -1767,20 +1767,20 @@ app.post('/api/vendor/sla-response', async (req, res) => {
       runInsert(
         `INSERT INTO sla_agreements (id, vendor_id, title, content, signature_name, signature_data, signature_status, sla_response_date, status)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [id, vendor_id, 'Service Level Agreement', 'SLA Content', signature_name || 'DR Orlando Olumide Odejide', signature_data, 'agreed', new Date().toISOString(), 'active']
+        [id, vendor_id, 'Service Level Agreement', 'SLA Content', signature_name || 'IT Manager', signature_data, 'agreed', new Date().toISOString(), 'active']
       );
     } else if (response === 'disagreed') {
       runInsert('UPDATE vendors SET status = ? WHERE id = ?', ['rejected', vendor_id]);
       runInsert(
         `INSERT INTO sla_agreements (id, vendor_id, title, signature_name, signature_status, status)
          VALUES (?, ?, ?, ?, ?, ?)`,
-        [uuidv4(), vendor_id, 'Service Level Agreement', signature_name || 'DR Orlando Olumide Odejide', 'disagreed', 'draft']
+        [uuidv4(), vendor_id, 'Service Level Agreement', signature_name || 'IT Manager', 'disagreed', 'draft']
       );
     } else if (response === 'request_modify') {
       runInsert(
         `INSERT INTO sla_agreements (id, vendor_id, title, signature_name, signature_status, status)
          VALUES (?, ?, ?, ?, ?, ?)`,
-        [uuidv4(), vendor_id, 'Service Level Agreement', signature_name || 'DR Orlando Olumide Odejide', 'request_modify', 'draft']
+        [uuidv4(), vendor_id, 'Service Level Agreement', signature_name || 'IT Manager', 'request_modify', 'draft']
       );
     }
 
